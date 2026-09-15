@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Birthday - Hendy Lukman</title>
+    <!-- Font: Orbitron (Futuristic), Russo One (Bold), Poppins (Clean) -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Russo+One&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* --- BLACK PINK THEME --- */
+            --bg-dark: #080808;
+            --bg-panel: #121212;
+            --neon-pink: #ff007f; /* Pink Neon Utama */
+            --neon-purple: #b026ff; /* Aksen Ungu */
+            --neon-silver: #e0e0e0;
+            --text-main: #ffffff;
+            --text-muted: #aaaaaa;
+            
+            --cake-base: #2d1b2d;
+            --cake-icing: var(--neon-pink);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: 'Poppins', sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-image: radial-gradient(circle at 50% 50%, #1a0510 0%, #000 80%);
+            background-attachment: fixed;
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* --- BACKGROUND GLOW --- */
+        .glow-bg {
+            position: fixed; 
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(255, 0, 127, 0.08) 0%, rgba(0,0,0,0) 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 0;
+            pointer-events: none;
+            animation: pulseGlow 5s infinite alternate;
+        }
+        @keyframes pulseGlow {
+            0% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
+            100% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.8; }
+        }
+
+        #confetti-canvas {
+            position: fixed; 
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        /* --- WELCOME SCREEN (COVER) --- */
+        #welcome-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1);
+            background-color: #000;
+            background-size: cover;
+            background-position: center;
+            box-shadow: inset 0 0 150px #000; 
+        }
+
+        #welcome-screen::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.8), rgba(255, 0, 127, 0.2));
+            z-index: -1;
+        }
+
+        /* --- ANIMASI GEOMETRI NEON --- */
+        .neon-grid {
+            position: fixed; 
+            width: 100%;
+            height: 100%;
+            top: 0; left: 0;
+            z-index: -1;
+            opacity: 0.2;
+            background-image: 
+                linear-gradient(var(--neon-purple) 1px, transparent 1px),
+                linear-gradient(90deg, var(--neon-purple) 1px, transparent 1px);
+            background-size: 50px 50px;
+            perspective: 500px;
+            transform: scale(1.2);
+            animation: gridMove 20s linear infinite;
+        }
+        @keyframes gridMove {
+            0% { transform: translateY(0) scale(1.2); }
+            100% { transform: translateY(50px) scale(1.2); }
+        }
+
+        .brand-logo {
+            font-family: 'Russo One', sans-serif;
+            font-size: 5rem;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: -2px;
+            text-shadow: 0 0 10px var(--neon-pink), 0 0 20px var(--neon-pink), 0 0 40px var(--neon-purple); 
+            margin-bottom: 10px;
+            text-align: center;
+            line-height: 0.9;
+            z-index: 2;
+        }
+        .brand-logo span { 
+            display: block; 
+            font-size: 1.5rem; 
+            color: var(--neon-silver); 
+            letter-spacing: 8px; 
+            margin-bottom: 15px; 
+            font-family: 'Orbitron'; 
+            font-weight: 300;
+            text-shadow: none;
+        }
+
+        /* --- SUBTITLE TEXT --- */
+        .subtitle-text {
+            color: #ccc;
+            letter-spacing: 5px;
+            margin-top: 10px;
+            font-family: 'Orbitron';
+            text-shadow: 0 0 5px #fff;
+            font-size: 1rem;
+            text-align: center;
+            width: 100%;
+        }
+
+        .btn-enter {
+            background: transparent;
+            color: #fff;
+            border: 2px solid var(--neon-pink);
+            padding: 15px 50px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            margin-top: 50px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: 0.3s;
+            position: relative;
+            overflow: hidden;
+            z-index: 2;
+        }
+        .btn-enter::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: var(--neon-pink);
+            transition: 0.4s;
+            z-index: -1;
+        }
+        .btn-enter:hover::before { left: 0; }
+        .btn-enter:hover { box-shadow: 0 0 20px var(--neon-pink); }
+
+        #welcome-screen.hidden {
+            transform: translateY(-100%);
+            pointer-events: none; 
+        }
+
+        /* --- MAGAZINE CONTAINER --- */
+        #app-container {
+            position: relative;
+            width: 90vw;
+            max-width: 1100px;
+            height: 85vh; 
+            z-index: 10;
+            opacity: 0;
+            transform: scale(0.95) translateY(20px);
+            transition: all 1s ease;
+            pointer-events: none;
+        }
+        
+        #app-container.active {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+            pointer-events: all;
+        }
+
+        .magazine {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+
+        .page {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background: var(--bg-panel);
+            border-radius: 2px;
+            transform-origin: left center;
+            transition: transform 0.8s cubic-bezier(0.645, 0.045, 0.355, 1);
+            backface-visibility: hidden;
+            overflow: hidden;
+            border: 1px solid #222;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
+        }
+
+        .page::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 15px;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, transparent, var(--neon-pink), transparent);
+            opacity: 0.2;
+        }
+
+        .page-content {
+            height: 100%;
+            width: 100%;
+            padding: 50px;
+            overflow-y: auto;
+            color: #fff;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        .page-content::-webkit-scrollbar { width: 4px; }
+        .page-content::-webkit-scrollbar-thumb { background: var(--neon-pink); border-radius: 4px; }
+
+        .page.flipped { transform: rotateY(-180deg); }
+
+        /* --- TYPOGRAPHY --- */
+        h2 {
+            font-family: 'Russo One', sans-serif;
+            font-size: 2.2rem;
+            color: var(--neon-silver);
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            border-left: 5px solid var(--neon-pink);
+            padding-left: 15px;
+            line-height: 1.2;
+        }
+
+        h3 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--neon-purple);
+            font-size: 1.4rem;
+            margin-top: 25px;
+            margin-bottom: 10px;
+        }
+
+        p { margin-bottom: 20px; text-align: justify; color: #ccc; }
+        .highlight { color: var(--neon-pink); font-weight: bold; text-shadow: 0 0 5px rgba(255, 0, 127, 0.5); }
+        .silver-text { color: var(--neon-silver); font-weight: bold; }
+
+        .quote-box {
+            background: rgba(255, 0, 127, 0.1);
+            border-left: 3px solid var(--neon-pink);
+            padding: 20px;
+            margin: 25px 0;
+            font-style: italic;
+            color: #fff;
+            font-family: 'Orbitron';
+            font-size: 1rem;
+            position: relative;
+        }
+        .quote-box::before {
+            content: '"';
+            position: absolute;
+            top: -10px; left: 5px;
+            font-size: 3rem;
+            color: var(--neon-pink);
+            opacity: 0.5;
+        }
+
+        /* Video Container MP4 */
+        .video-wrapper {
+            position: relative;
+            width: 100%;
+            background: #000;
+            border: 2px solid var(--neon-purple);
+            box-shadow: 0 0 20px rgba(176, 38, 255, 0.2);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .video-wrapper video {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        .video-msg {
+            text-align: center;
+            margin-top: 10px;
+            font-family: 'Orbitron';
+            font-size: 0.8rem;
+            color: var(--neon-pink);
+            opacity: 0.8;
+        }
+
+        /* Nav */
+        .nav-controls {
+            position: absolute;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            gap: 15px;
+            z-index: 50;
+        }
+        .nav-btn {
+            background: rgba(0,0,0,0.8);
+            border: 1px solid var(--neon-silver);
+            color: var(--neon-silver);
+            width: 50px;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: 0.3s;
+            border-radius: 50%;
+        }
+        .nav-btn:hover:not(:disabled) {
+            background: var(--neon-pink);
+            border-color: var(--neon-pink);
+            color: #fff;
+            box-shadow: 0 0 15px var(--neon-pink);
+        }
+        .nav-btn:disabled { opacity: 0.3; cursor: default; border-color: #555; }
+
+        /* Z-Indexes */
+        .z-7 { z-index: 10; }
+        .z-6 { z-index: 9; }
+        .z-5 { z-index: 8; }
+        .z-4 { z-index: 7; }
+        .z-3 { z-index: 6; }
+        .z-2 { z-index: 5; }
+        .z-1 { z-index: 4; }
+
+        /* --- CAKE & FLAME --- */
+        .cake-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+        }
+        
+        .cake-container {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 40px;
+            transform-style: preserve-3d;
+            animation: floatCake 4s ease-in-out infinite;
+        }
+        @keyframes floatCake {
+            0%, 100% { transform: translateY(0) rotateY(0deg); }
+            50% { transform: translateY(-20px) rotateY(10deg); }
+        }
+        .cake-body {
+            position: absolute; bottom: 40px; left: 25px;
+            width: 150px; height: 80px;
+            background: var(--cake-base);
+            border-radius: 10px 10px 5px 5px;
+            box-shadow: inset -10px 0 20px rgba(0,0,0,0.5), 0 0 15px rgba(0,0,0,0.5);
+        }
+        .cake-icing {
+            position: absolute; top: -15px; left: -5px; width: 110%; height: 35px;
+            background: var(--cake-icing);
+            border-radius: 20px;
+            box-shadow: 0 0 10px var(--neon-pink);
+        }
+        /* Drips */
+        .cake-icing::after {
+            content: ''; position: absolute; top: 20px; left: 10px; width: 20px; height: 30px;
+            background: var(--cake-icing); border-radius: 0 0 10px 10px;
+        }
+        .cake-icing::before {
+            content: ''; position: absolute; top: 20px; right: 20px; width: 25px; height: 40px;
+            background: var(--cake-icing); border-radius: 0 0 15px 15px;
+        }
+
+        .candle {
+            position: absolute; top: -30px; left: 50%; transform: translateX(-50%);
+            width: 12px; height: 40px;
+            background: repeating-linear-gradient(45deg, #fff, #fff 5px, var(--neon-purple) 5px, var(--neon-purple) 10px);
+            z-index: 2;
+            border-radius: 2px;
+        }
+        .flame {
+            position: absolute; top: -20px; left: 50%; transform: translateX(-50%);
+            width: 14px; height: 20px;
+            background: radial-gradient(ellipse at bottom, #ffff00 0%, #ff007f 60%, transparent 100%);
+            border-radius: 50% 50% 20% 20%;
+            box-shadow: 0 0 10px #ffff00, 0 0 20px var(--neon-pink);
+            animation: flicker 0.1s infinite alternate;
+            transform-origin: bottom center;
+        }
+        @keyframes flicker {
+            0% { transform: translateX(-50%) scale(1); opacity: 0.9; }
+            100% { transform: translateX(-50%) scale(1.2) skewX(3deg); opacity: 1; }
+        }
+
+        /* Toast Notification */
+        #toast {
+            visibility: hidden;
+            min-width: 250px;
+            background-color: rgba(0, 0, 0, 0.9);
+            color: #fff;
+            text-align: center;
+            border-radius: 4px;
+            border-left: 4px solid var(--neon-pink);
+            padding: 16px;
+            position: fixed;
+            z-index: 300;
+            left: 50%;
+            bottom: 30px;
+            transform: translateX(-50%);
+            font-size: 1rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            font-family: 'Orbitron';
+        }
+        #toast.show {
+            visibility: visible;
+            animation: fadein 0.5s, fadeout 0.5s 2.5s;
+        }
+        @keyframes fadein {
+            from {bottom: 0; opacity: 0;}
+            to {bottom: 30px; opacity: 1;}
+        }
+        @keyframes fadeout {
+            from {bottom: 30px; opacity: 1;}
+            to {bottom: 0; opacity: 0;}
+        }
+
+        /* Member Card Styles */
+        .member-card {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            padding: 15px;
+            text-align: center;
+            transition: 0.3s;
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+        .member-card:hover {
+            border-color: var(--neon-pink);
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(255, 0, 127, 0.2);
+        }
+        .member-img {
+            width: 60px; height: 60px; background: #333; border-radius: 50%; margin: 0 auto 10px;
+            overflow: hidden; border: 2px solid var(--neon-purple);
+        }
+        .member-img img { width: 100%; height: 100%; object-fit: cover; }
+        .member-name { font-weight: bold; font-family: 'Russo One'; font-size: 0.9rem; color: #fff; margin-bottom: 5px; }
+        .member-quote { font-size: 0.7rem; color: #aaa; font-style: italic; line-height: 1.4; }
+
+        /* --- RESPONSIVE CSS --- */
+        @media (max-width: 768px) {
+            body { background-attachment: fixed; }
+            #app-container { width: 95vw; height: 90vh; }
+            .page-content { padding: 20px; font-size: 0.95rem; }
+            .brand-logo { font-size: 3rem; }
+            .subtitle-text {
+                font-size: 0.75rem; 
+                letter-spacing: 2px; 
+                padding: 0 10px; 
+            }
+            h2 { font-size: 1.4rem; margin-bottom: 15px; }
+            h3 { font-size: 1.1rem; }
+            .nav-controls { bottom: 20px; right: 20px; gap: 10px; }
+            .nav-btn { width: 45px; height: 45px; font-size: 1rem; }
+            .cake-container { transform: scale(0.8); }
+            #warriors-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 10px !important; }
+            .page-content[style*="grid-template-columns"] { grid-template-columns: repeat(2, 1fr) !important; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="glow-bg"></div>
+    <div class="neon-grid"></div>
+
+    <!-- Audio File (Hidden) -->
+    <audio id="bg-music" loop>
+        <source src="lagu.mpeg" type="audio/mpeg">
+    </audio>
+
+    <!-- Toast Notification -->
+    <div id="toast">Notifikasi Sistem</div>
+
+    <!-- Welcome Screen -->
+    <section id="welcome-screen">
+        <div class="brand-logo">
+            <span>21 TAHUN</span>
+            HENDY<br>LUKMAN
+        </div>
+        <p class="subtitle-text">FOR RENCANG HENDY OFFICIAL</p>
+        <button class="btn-enter" onclick="openMagazine()">AYO LANJUTTT</button>
+    </section>
+
+    <!-- Magazine -->
+    <div id="app-container">
+        <div class="magazine">
+            
+            <div class="nav-controls">
+                <button class="nav-btn" id="prev-btn" onclick="prevPage()">&#8592;</button>
+                <button class="nav-btn" id="next-btn" onclick="nextPage()">&#8594;</button>
+            </div>
+
+            <!-- PAGE 1: COVER -->
+            <div class="page z-7" id="page-1">
+                <div class="page-content" style="display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; background: radial-gradient(circle at center, #1f0510, #000);">
+                    <div style="border: 2px solid var(--neon-pink); padding: 40px; width: 100%; max-width: 500px; position: relative; background: rgba(0,0,0,0.8); backdrop-filter: blur(10px); box-shadow: 0 0 30px rgba(255, 0, 127, 0.2);">
+                        <p style="color: var(--neon-silver); letter-spacing: 3px; margin-bottom: 20px;">SPECIAL ISSUE // 2027</p>
+                        <h1 style="font-family: 'Russo One'; font-size: 3.5rem; line-height: 0.9; text-transform: uppercase; margin-bottom: 10px; color: #fff;">HENDY<br>LUKMAN</h1>
+                        <div style="width: 100px; height: 5px; background: linear-gradient(90deg, var(--neon-pink), var(--neon-purple)); margin: 20px auto;"></div>
+                        <p style="font-family: 'Orbitron'; font-size: 1rem; color: var(--neon-pink);">21 BUKANLAH HANYA SEBUAH ANGKA,
+                         MELAINKAN PERJALANAN PANJANG YANG SUDAH KAMU LEWATI SAMPAI DI TITIK INI</p>
+                        <p style="margin-top: 30px; font-size: 0.9rem; color: #888;">MARET 2027</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PAGE 2: SURAT -->
+            <div class="page z-6" id="page-2">
+                <div class="page-content">
+                    <h2>SUGENG AMBAL WARSO DEN BAGUSS</h2>
+                    <p class="silver-text">Sebuah pesan singkat dari RH family</p>
+                    <br>
+                    <p>
+                        Hii Hendy, <span class="highlight">SELAMAT ULANG TAHUN.</span> Nggak kerasa, tepat di bulan ini kamu sudah sampai usia 21 tahun.
+                        Perjalanan selama 21 tahun tentu bukan perjalanan yang mudah. Ada banyak cerita, proses perjuangan, dan mungkin juga hal-hal yang nggak semua orang tau.
+                        Tapi dari semua perjalanan itu, lihatlah kebelakang sudah sejauh mana kamu melangkah.
+                    </p>
+                    <p>Trimakasih ya, karena kamu sudah menjadi salah satu alasan kami bisa tersenyum dan terhibur di hari hari kami yang terkadang berat.
+                        Semoga di usia yang baru ini, langkahmu dimudahkan, rezekimu dilancarkan, dan semua hal yang sedang kamu usahakan bisa tercapai.
+                        Tetap jadi Hendy yang kami kenal ya.                    </p>
+                    <div class="quote-box">
+                        "Selamat bertambah usia, Teruslah bersinar degan kerja kerasmu itu. Keep chasing those dreams, Enjoy your day, you deserve all the "
+                    </div>
+                    <p>
+                        Selamat ulang tahun ke-20. Semoga semua impianmu segera terwujud, doamu segera terkabul, dan semoga kamu selalu dikelilingi oleh orang-orang yang menerima kamu apa adanya.
+                    </p>
+                    <p style="text-align: right; margin-top: 30px;">
+                        <strong>— Rencang Hendy Offcial</strong>
+                    </p>
+                </div>
+            </div>
+
+            <!-- PAGE 3: VISI -->
+            <div class="page z-5" id="page-3">
+                <div class="page-content">
+                    <h2>THE STAR</h2>
+                    
+                    <div style="display: flex; flex-wrap: wrap; gap: 30px; align-items: flex-start;">
+                        <div style="flex: 1; min-width: 200px;">
+                            <div style="border: 2px solid var(--neon-purple); padding: 5px; filter: drop-shadow(0 0 10px var(--neon-purple));">
+                                <img src="HNDY.jpg" alt="Hendy" style="width: 100%; height: auto; display: block; filter: contrast(1.2);">
+                            </div>
+                        </div>
+                        
+                        <div style="flex: 1.5;">
+                            <h3>A LITTLE REMINDER</h3>
+                            <p>
+                                Di umur 20 ini, kamu bebas menentukan arah. 
+                                Jangan takut salah, karena kesalahan adalah guru terbaik.
+                            </p>
+                            <p>
+                                Dunia ini keras, seperti beton. Ingat, kesuksesan bukan hanya tentang uang, tapi tentang dampak positif yang kamu berikan kepada orang lain.
+                                Perjalananm menuju kesuksesan masih panjang. Masih akan banyak cerita dan hal-hal baru yang menunggu di depan sana.
+                            </p>
+                            <span class="highlight">Just take it one step at a time</span>
+                            <ul style="margin-left: 20px; color: #aaa; list-style-type: square;">
+                                <li style="margin-bottom: 10px;">Jangan takut mengambil langkah baru, meskipun kamu belum tahu itu akan membawa kamu kemana</li>
+                                <li style="margin-bottom: 10px;">Percaya sama proses dan kemampuanmu sendiri.</li>
+                                  <li style="margin-bottom: 10px;">Tetap rendah hati dan selalu nikmati hal kecil yang membuatmu bahagia.</li>
+                                <li style="margin-bottom: 10px;">Tetap humble di manapun kamu berada.</li>
+                            </ul>
+                            <p>
+                                Yuk, terus melangkah, berani ambil kesempatan, dan nikmati setiap prosesnya. Percaya saja, masih banyak hal baik yang menunggumu di depan. 🤍
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PAGE 4: GALERI -->
+            <div class="page z-4" id="page-4">
+                <div class="page-content">
+                    <h2>HENDY'S LITTLE GALLERY</h2>
+                    <p>Ada sedikit fotomu, semoga kamu ingat kenangannya yaa....</p>
+                    <br>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px;">
+                        <img src="hndy1.jpg" style="width:100%; border:1px solid #333; opacity:0.8; transition:0.3s;" onmouseover="this.style.opacity=1;this.style.borderColor='var(--neon-pink)'" onmouseout="this.style.opacity=0.8;this.style.borderColor='#333'">
+                        <img src="hndy2.jpg" style="width:100%; border:1px solid #333; opacity:0.8; transition:0.3s;" onmouseover="this.style.opacity=1;this.style.borderColor='var(--neon-pink)'" onmouseout="this.style.opacity=0.8;this.style.borderColor='#333'">
+                        <img src="hndy3.jpg" style="width:100%; border:1px solid #333; opacity:0.8; transition:0.3s;" onmouseover="this.style.opacity=1;this.style.borderColor='var(--neon-pink)'" onmouseout="this.style.opacity=0.8;this.style.borderColor='#333'">
+                        <img src="Hendy4.jpg" style="width:100%; border:1px solid #333; opacity:0.8; transition:0.3s;" onmouseover="this.style.opacity=1;this.style.borderColor='var(--neon-pink)'" onmouseout="this.style.opacity=0.8;this.style.borderColor='#333'">
+                        <img src="hndy5.jpeg" style="width:100%; border:1px solid #333; opacity:0.8; transition:0.3s;" onmouseover="this.style.opacity=1;this.style.borderColor='var(--neon-pink)'" onmouseout="this.style.opacity=0.8;this.style.borderColor='#333'">
+                        <img src="hndy6.jpg" style="width:100%; border:1px solid #333; opacity:0.8; transition:0.3s;" onmouseover="this.style.opacity=1;this.style.borderColor='var(--neon-pink)'" onmouseout="this.style.opacity=0.8;this.style.borderColor='#333'">
+                    </div>
+                </div>
+            </div>
+
+            <!-- PAGE 5: VIDEO MP4 -->
+            <div class="page z-3" id="page-5">
+                <div class="page-content" style="display: flex; flex-direction: column; justify-content: center;">
+                    <h2>THE RECAP</h2>
+                    <p style="text-align: center; margin-bottom: 20px;">Sedikit video karya anak RH.</p>
+                    
+                    <div class="video-wrapper">
+                        <video id="myVideo" controls poster="https://picsum.photos/seed/poster/800/450">
+                            <source src="ultah-hendy.mp4" type="video/mp4">
+                            Browser Anda tidak mendukung tag video.
+                        </video>
+                    </div>
+                    
+                    <div class="video-msg">
+                        // STATUS: VIDEO STREAM ACTIVE //
+                    </div>
+                </div>
+            </div>
+
+            <!-- PAGE 6: MEMBER SQUAD -->
+            <div class="page z-2" id="page-6">
+                <div class="page-content">
+                    <h2>THE SQUAD</h2>
+                    <p>Orang-orang spesial di belakang layar.</p>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 15px; margin-top: 20px;" id="warriors-grid">
+                        <!-- Diisi lewat JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- PAGE 7: CLOSING & CAKE ANIMATION -->
+            <div class="page z-1" id="page-7">
+                <div class="page-content cake-section">
+                    <div class="cake-container">
+                        <div class="candle">
+                            <div class="flame"></div>
+                        </div>
+                        <div class="cake-body">
+                            <div class="cake-icing"></div>
+                        </div>
+                    </div>
+
+                    <h2 style="border:none; padding:0; margin-top: 10px; text-shadow: 0 0 10px var(--neon-pink);">HAPPY BIRTHDAY</h2>
+                    <h1 style="font-family: 'Russo One'; font-size: 3rem; line-height: 1; margin: 15px 0; color: var(--neon-pink); text-shadow: 4px 4px 0 rgba(255,255,255,0.2);">HENDY<br>LUKMAN</h1>
+                    <p style="max-width: 500px; margin-top: 20px; color: #ddd;">
+                        Buatlah permohonan di hari spesial ini. Semoga apa yang kamu harapkan menjadi nyata.
+                    </p>
+                    
+                    <div style="margin-top: 50px; width: 100%; border-top: 1px solid #333; padding-top: 20px;">
+                        <p style="color: var(--neon-silver); font-family: 'Orbitron'; font-size: 0.9rem;">END OF TRANSMISSION</p>
+                        <p style="font-size: 0.8rem; color: #555;">© 2027 RENCANG HENDY PRODUCTION</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // --- PENGATURAN BACKGROUND FOTO ---
+        // Masukkan nama file foto cover kamu di sini
+        const namaFoto = "rh2.jpeg";
+        
+        const welcomeScreen = document.getElementById('welcome-screen');
+        welcomeScreen.style.backgroundImage = `url('${namaFoto}')`;
+
+        /* --- LOGIC --- */
+        function openMagazine() {
+            welcomeScreen.classList.add('hidden');
+            const app = document.getElementById('app-container');
+            showToast("Selamat membaca, Resapi setiap katanya");
+            
+            // Musik otomatis play saat tombol ditekan
+            const audio = document.getElementById('bg-music');
+            audio.play().catch(e => {
+                console.log("Autoplay dicegah browser.");
+            });
+
+            setTimeout(() => {
+                app.classList.add('active');
+            }, 500);
+        }
+
+        let currentPage = 1;
+        const totalPages = 7;
+
+        function updateNav() {
+            document.getElementById('prev-btn').disabled = currentPage === 1;
+            document.getElementById('next-btn').disabled = currentPage === totalPages;
+        }
+
+        function nextPage() {
+            if (currentPage < totalPages) {
+                const el = document.getElementById(`page-${currentPage}`);
+                el.classList.add('flipped');
+                
+                if(currentPage === 5) {
+                    document.getElementById('myVideo').pause();
+                }
+
+                currentPage++;
+                updateNav();
+            }
+        }
+
+        function prevPage() {
+            if (currentPage > 1) {
+                currentPage--;
+                const el = document.getElementById(`page-${currentPage}`);
+                el.classList.remove('flipped');
+                updateNav();
+            }
+        }
+
+        /* --- TOAST NOTIFICATION --- */
+        function showToast(message) {
+            var x = document.getElementById("toast");
+            x.innerText = message;
+            x.className = "show";
+            setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+        }
+
+        /* --- WARRIORS (MEMBER DATA) --- */
+        const squadData = [
+            { name: "MEMBER 1", quote: "quotes" },
+            { name: "MEMBER 2", quote: "quotes" },
+            { name: "MEMBER 3", quote: "quotes" },
+            { name: "MEMBER 4", quote: "quotes" },
+            { name: "MEMBER 5", quote: "quotes" },
+            { name: "MEMBER 6", quote: "quotes" },
+            { name: "MEMBER 7", quote: "quotes" },
+            { name: "MEMBER 8", quote: "quotes" },
+            { name: "MEMBER 9", quote: "quotes" },
+            { name: "MEMBER 10", quote: "quotes" },
+            { name: "MEMBER 11", quote: "quotes" },
+            { name: "MEMBER 12", quote: "quotes" },
+            { name: "MEMBER 13", quote: "quotes" },
+            { name: "MEMBER 14", quote: "quotes" },
+            { name: "MEMBER 15", quote: "quotes" },
+            { name: "MEMBER 16", quote: "quotes." },
+            { name: "MEMBER 17", quote: "quotes." },
+            { name: "MEMBER 18", quote: "quotes" },
+            { name: "MEMBER 19", quote: "quotes" },
+            { name: "MEMBER 20", quote: "quotes" },
+            { name: "MEMBER 21", quote: "quotes" },
+            { name: "MEMBER 22", quote: "quotes" },
+            { name: "MEMBER 23", quote: "quotes" }
+        ];
+
+        const grid = document.getElementById('warriors-grid');
+        
+        squadData.forEach((member, index) => {
+            const div = document.createElement('div');
+            div.className = 'member-card';
+            
+            // FOTO DARI FOLDER: script ini otomatis mencari file member1.jpg, member2.jpg, dst
+            const fileName = `member${index + 1}.jpg`;
+            
+            div.innerHTML = `
+                <div class="member-img">
+                    <img src="${fileName}" alt="${member.name}" onerror="this.src='https://via.placeholder.com/100?text=No+Img'">
+                </div>
+                <div class="member-name">${member.name}</div>
+                <div class="member-quote">"${member.quote}"</div>
+            `;
+            grid.appendChild(div);
+        });
+
+        /* --- CONFETTI --- */
+        const canvas = document.getElementById('confetti-canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        let particles = [];
+        const colors = ['#ff007f', '#b026ff', '#ffffff', '#ff99cc']; 
+
+        function initConfetti() {
+            for(let i=0; i<60; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    size: Math.random() * 6 + 3,
+                    speedY: Math.random() * 1.5 + 0.5,
+                    speedX: Math.random() * 1 - 0.5,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    rotation: Math.random() * 360,
+                    rotSpeed: Math.random() * 2 - 1
+                });
+            }
+        }
+
+        function drawConfetti() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.y += p.speedY;
+                p.x += p.speedX;
+                p.rotation += p.rotSpeed;
+                if(p.y > canvas.height) { p.y = -20; p.x = Math.random() * canvas.width; }
+
+                ctx.save();
+                ctx.translate(p.x, p.y);
+                ctx.rotate(p.rotation * Math.PI / 180);
+                ctx.fillStyle = p.color;
+                ctx.fillRect(-p.size/2, -p.size/2, p.size, p.size);
+                ctx.restore();
+            });
+            requestAnimationFrame(drawConfetti);
+        }
+
+        initConfetti();
+        drawConfetti();
+        window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
+    </script>
+</body>
+</html>
